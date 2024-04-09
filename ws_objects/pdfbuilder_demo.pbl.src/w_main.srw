@@ -1053,38 +1053,7 @@ string pointer = "Hyperlink!"
 string text = "Watermark Text"
 end type
 
-event clicked;//PDFDocument lpdf_doc
-//String ls_PathName, ls_FileName
-//
-////Creamos el Objeto PDFDocument
-//lpdf_doc = CREATE PDFDocument
-//
-//IF GetFileOpenName ("Archivo PDF", ls_PathName, ls_FileName, "PDF", "PDF Files (*.pdf),*.pdf") < 1 THEN Return
-//
-////Importamos el Primer PDF Seleccionado
-//lpdf_doc.ImportPdf(ls_PathName)
-//
-////Añadimos el Texto como Marca de Agua y Fijamos sus propiedades. 
-//lpdf_doc.Watermark.Text.Content = "COPIA"
-//lpdf_doc.Watermark.Text.Font.FontName="Arial"
-//lpdf_doc.Watermark.Text.Font.FontSize = 48
-//lpdf_doc.Watermark.Text.Font.Bold = True
-//lpdf_doc.Watermark.Text.TextColor.RGB = rgb(166,202,240)
-//
-////Otras Propiedades de la Marca de Agua 
-//lpdf_doc.Watermark.Transparency = 50
-//lpdf_doc.Watermark.Rotate = 30
-//
-////Guardamos y Visualizamos.
-//wf_save_and_display_pdf (lpdf_doc)
-//
-
-//Notación Por Objetos 
-
-PDFDocument lpdf_doc
-PDFFont lpdf_font
-PDFColor lpdf_color
-PDFWatermark lpdf_wm
+event clicked;PDFDocument lpdf_doc
 String ls_PathName, ls_FileName
 
 //Creamos el Objeto PDFDocument
@@ -1095,36 +1064,67 @@ IF GetFileOpenName ("Archivo PDF", ls_PathName, ls_FileName, "PDF", "PDF Files (
 //Importamos el Primer PDF Seleccionado
 lpdf_doc.ImportPdf(ls_PathName)
 
- lpdf_wm = CREATE PDFWatermark
-
 //Añadimos el Texto como Marca de Agua y Fijamos sus propiedades. 
-lpdf_wm.Text.Content = "PowerTalks 2024"
-
-//Creamos Objeto para Manjejar Propiedades de la Marca de Agua
-
-//Establecemos la pripiedades de Tipo de Letra
-lpdf_font = CREATE PDFFont
-lpdf_font.FontName="Arial"
-lpdf_font.FontSize = 36
-lpdf_font.Bold = True
-
-//Establecemos el Color, dos Formas Alternativas:
-lpdf_color = CREATE PDFColor
-lpdf_color.rgb = rgb(166,202,240)
-
-//Ponemos las propiedades de Color y la Fuente en la Marca de Agua
-lpdf_wm.Text.TextColor= lpdf_color
-lpdf_wm.Text.Font= lpdf_font
+lpdf_doc.Watermark.Text.Content = "COPIA"
+lpdf_doc.Watermark.Text.Font.FontName="Arial"
+lpdf_doc.Watermark.Text.Font.FontSize = 48
+lpdf_doc.Watermark.Text.Font.Bold = True
+lpdf_doc.Watermark.Text.TextColor.RGB = rgb(166,202,240)
 
 //Otras Propiedades de la Marca de Agua 
-lpdf_wm.transparency = 50
-lpdf_wm.rotate = 30
-
-//Asignamos la Marca de Agua al objeto PdfDocument
-lpdf_doc.WaterMark = lpdf_wm
+lpdf_doc.Watermark.Transparency = 50
+lpdf_doc.Watermark.Rotate = 30
 
 //Guardamos y Visualizamos.
 wf_save_and_display_pdf (lpdf_doc)
+
+
+//Notación Por Objetos 
+
+//PDFDocument lpdf_doc
+//PDFFont lpdf_font
+//PDFColor lpdf_color
+//PDFWatermark lpdf_wm
+//String ls_PathName, ls_FileName
+//
+////Creamos el Objeto PDFDocument
+//lpdf_doc = CREATE PDFDocument
+//
+//IF GetFileOpenName ("Archivo PDF", ls_PathName, ls_FileName, "PDF", "PDF Files (*.pdf),*.pdf") < 1 THEN Return
+//
+////Importamos el Primer PDF Seleccionado
+//lpdf_doc.ImportPdf(ls_PathName)
+//
+// lpdf_wm = CREATE PDFWatermark
+//
+////Añadimos el Texto como Marca de Agua y Fijamos sus propiedades. 
+//lpdf_wm.Text.Content = "PowerTalks 2024"
+//
+////Creamos Objeto para Manjejar Propiedades de la Marca de Agua
+//
+////Establecemos la pripiedades de Tipo de Letra
+//lpdf_font = CREATE PDFFont
+//lpdf_font.FontName="Arial"
+//lpdf_font.FontSize = 36
+//lpdf_font.Bold = True
+//
+////Establecemos el Color, dos Formas Alternativas:
+//lpdf_color = CREATE PDFColor
+//lpdf_color.rgb = rgb(166,202,240)
+//
+////Ponemos las propiedades de Color y la Fuente en la Marca de Agua
+//lpdf_wm.Text.TextColor= lpdf_color
+//lpdf_wm.Text.Font= lpdf_font
+//
+////Otras Propiedades de la Marca de Agua 
+//lpdf_wm.transparency = 50
+//lpdf_wm.rotate = 30
+//
+////Asignamos la Marca de Agua al objeto PdfDocument
+//lpdf_doc.WaterMark = lpdf_wm
+//
+////Guardamos y Visualizamos.
+//wf_save_and_display_pdf (lpdf_doc)
 end event
 
 type cb_set_watermark_image from commandbutton within w_main
