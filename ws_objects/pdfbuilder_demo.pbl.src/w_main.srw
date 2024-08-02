@@ -2,6 +2,10 @@
 forward
 global type w_main from window
 end type
+type st_11 from statictext within w_main
+end type
+type cb_stamp_pdf from commandbutton within w_main
+end type
 type pb_show_datastore from picturebutton within w_main
 end type
 type st_10 from statictext within w_main
@@ -42,8 +46,6 @@ type p_2 from picture within w_main
 end type
 type st_info from statictext within w_main
 end type
-type cb_create_fillable_form from commandbutton within w_main
-end type
 type cb_settings from commandbutton within w_main
 end type
 type cb_add_page from commandbutton within w_main
@@ -68,6 +70,8 @@ type wb_1 from webbrowser within w_main
 end type
 type r_2 from rectangle within w_main
 end type
+type cb_create_fillable_form from commandbutton within w_main
+end type
 end forward
 
 global type w_main from window
@@ -82,6 +86,8 @@ boolean resizable = true
 long backcolor = 67108864
 string icon = "AppIcon!"
 boolean center = true
+st_11 st_11
+cb_stamp_pdf cb_stamp_pdf
 pb_show_datastore pb_show_datastore
 st_10 st_10
 st_9 st_9
@@ -102,7 +108,6 @@ st_platform st_platform
 st_myversion st_myversion
 p_2 p_2
 st_info st_info
-cb_create_fillable_form cb_create_fillable_form
 cb_settings cb_settings
 cb_add_page cb_add_page
 cb_compress cb_compress
@@ -115,6 +120,7 @@ cb_import_datastore cb_import_datastore
 cb_import_pdf cb_import_pdf
 wb_1 wb_1
 r_2 r_2
+cb_create_fillable_form cb_create_fillable_form
 end type
 global w_main w_main
 
@@ -163,6 +169,8 @@ wb_1.Navigate(ls_PathName)
 end subroutine
 
 on w_main.create
+this.st_11=create st_11
+this.cb_stamp_pdf=create cb_stamp_pdf
 this.pb_show_datastore=create pb_show_datastore
 this.st_10=create st_10
 this.st_9=create st_9
@@ -183,7 +191,6 @@ this.st_platform=create st_platform
 this.st_myversion=create st_myversion
 this.p_2=create p_2
 this.st_info=create st_info
-this.cb_create_fillable_form=create cb_create_fillable_form
 this.cb_settings=create cb_settings
 this.cb_add_page=create cb_add_page
 this.cb_compress=create cb_compress
@@ -196,7 +203,10 @@ this.cb_import_datastore=create cb_import_datastore
 this.cb_import_pdf=create cb_import_pdf
 this.wb_1=create wb_1
 this.r_2=create r_2
-this.Control[]={this.pb_show_datastore,&
+this.cb_create_fillable_form=create cb_create_fillable_form
+this.Control[]={this.st_11,&
+this.cb_stamp_pdf,&
+this.pb_show_datastore,&
 this.st_10,&
 this.st_9,&
 this.st_8,&
@@ -216,7 +226,6 @@ this.st_platform,&
 this.st_myversion,&
 this.p_2,&
 this.st_info,&
-this.cb_create_fillable_form,&
 this.cb_settings,&
 this.cb_add_page,&
 this.cb_compress,&
@@ -228,10 +237,13 @@ this.cb_merge_pdf,&
 this.cb_import_datastore,&
 this.cb_import_pdf,&
 this.wb_1,&
-this.r_2}
+this.r_2,&
+this.cb_create_fillable_form}
 end on
 
 on w_main.destroy
+destroy(this.st_11)
+destroy(this.cb_stamp_pdf)
 destroy(this.pb_show_datastore)
 destroy(this.st_10)
 destroy(this.st_9)
@@ -252,7 +264,6 @@ destroy(this.st_platform)
 destroy(this.st_myversion)
 destroy(this.p_2)
 destroy(this.st_info)
-destroy(this.cb_create_fillable_form)
 destroy(this.cb_settings)
 destroy(this.cb_add_page)
 destroy(this.cb_compress)
@@ -265,6 +276,7 @@ destroy(this.cb_import_datastore)
 destroy(this.cb_import_pdf)
 destroy(this.wb_1)
 destroy(this.r_2)
+destroy(this.cb_create_fillable_form)
 end on
 
 event open;wf_version(st_myversion, st_platform)
@@ -288,6 +300,94 @@ cbx_auto.y = newheight - cbx_auto.height  - 200
 end event
 
 event activate;if isvalid(w_datastore) then close(w_datastore)
+end event
+
+type st_11 from statictext within w_main
+integer y = 2056
+integer width = 82
+integer height = 64
+integer textsize = -10
+integer weight = 700
+fontpitch fontpitch = variable!
+fontfamily fontfamily = swiss!
+string facename = "Arial"
+long textcolor = 8388736
+long backcolor = 67108864
+string text = "11"
+alignment alignment = right!
+long bordercolor = 128
+boolean focusrectangle = false
+end type
+
+type cb_stamp_pdf from commandbutton within w_main
+integer x = 101
+integer y = 2032
+integer width = 585
+integer height = 112
+integer taborder = 90
+integer textsize = -10
+integer weight = 400
+fontpitch fontpitch = variable!
+fontfamily fontfamily = swiss!
+string facename = "Arial"
+string pointer = "Hyperlink!"
+string text = "Stamp all Pages"
+end type
+
+event clicked;//Con el ejemplo Adpage vamos a separar un Documento PDF en multiples PDF de una página.
+PDFpage lpdf_page
+PDFImage lpdf_image 
+PDFdocument lpdf_doc
+String ls_pdfpathname, ls_pdf, ls_ImagePathName, ls_Image
+long ll_pagecount, ll_page
+
+
+//Creamos el Objetos
+lpdf_doc = CREATE PDFdocument
+
+IF GetFileOpenName ("Archivo PDF", ls_pdfpathname, ls_pdf, "PDF", "PDF Files (*.pdf),*.pdf") < 1 THEN Return
+
+//Importamos el Primer PDF Seleccionado
+lpdf_doc.ImportPdf(ls_pdfpathname)
+
+ll_pagecount = lpdf_doc.GetPageCount()
+
+//Mostramos el PDF en Pantalla.
+wb_1.Navigate (ls_pdfpathname)
+
+//bmp, j2k, jp2, jpeg, jpf, jpg, jpx, png, svg, tif, and tiff. 
+IF GetFileOpenName ("Imagen", ls_ImagePathName, ls_Image, "PNG", "PNG Files (*.png),*.png") < 1 THEN Return
+
+
+FOR ll_page = 1 to ll_pagecount
+	lpdf_image = CREATE PDFImage
+	//Obtenemos la primera página
+	lpdf_page = lpdf_doc.GetPage(ll_page)
+	
+	//Creamos la Imagen en el Objeto PdfImage
+	lpdf_image.FileName = ls_ImagePathName
+	lpdf_image.x=150
+	lpdf_image.y=700
+	lpdf_image.height=250
+	lpdf_image.width=250
+	//lpdf_image.FitMethod = PDFImageFitmethod_Clip!  //Ajustar la imagen con recorte.
+	//lpdf_image.FitMethod = PDFImageFitmethod_Entire!  //Ajustar la imagen sin recorte.
+	lpdf_image.FitMethod = PDFImageFitmethod_Meet!  //Ajustar la imagen con cambio de tamaño proporcional.
+	
+	
+	//Añadimos la Imagen Creada al Objeto PdfPage
+	lpdf_page.AddContent(lpdf_image)
+		
+	//Importamos la Pagina con la Imagen al Objeto PDFDocument
+	lpdf_doc.AddPage(lpdf_page)
+destroy lpdf_image
+next
+	
+//Guardamos y Visualizamos.	
+wf_save_and_display_pdf(lpdf_doc) 
+
+
+
 end event
 
 type pb_show_datastore from picturebutton within w_main
@@ -736,61 +836,6 @@ long backcolor = 553648127
 string text = "Copyright © Ramón San Félix Ramón  rsrsystem.soft@gmail.com"
 boolean focusrectangle = false
 end type
-
-type cb_create_fillable_form from commandbutton within w_main
-boolean visible = false
-integer x = 59
-integer y = 1856
-integer width = 635
-integer height = 112
-integer taborder = 40
-integer textsize = -10
-integer weight = 400
-fontcharset fontcharset = ansi!
-fontpitch fontpitch = variable!
-fontfamily fontfamily = swiss!
-string facename = "Tahoma"
-string pointer = "Hyperlink!"
-string text = "Create Fillable Form"
-end type
-
-event clicked;PDFdocument lpdf_doc
-PDFpage lpdf_page
-PDFtext lpdf_sle
-PDFMultilineText lpdf_mle
-//PDFRichText lpdf_rte
-
-lpdf_doc = CREATE PDFdocument
-lpdf_page = CREATE PDFpage
-lpdf_sle = CREATE PDFtext
-lpdf_mle = CREATE PDFMultilineText
-//lpdf_rte = CREATE PDFRichText
-
-lpdf_sle.content = "Nombre"
-lpdf_sle.textcolor.rgb = rgb(255,0,0)
-lpdf_sle.x = 100
-lpdf_sle.y = 100
-lpdf_sle.name = "Nombre"
-
-lpdf_mle.content = "Apellidos"
-lpdf_mle.textcolor.rgb = rgb (0,0,0)
-lpdf_mle.x = 100
-lpdf_mle.y = 200
-lpdf_mle.name = "Apellidos"
-lpdf_mle.setsize(200, 200)
-
-lpdf_page.addcontent(lpdf_sle)
-lpdf_page.addcontent(lpdf_mle)
-//lpdf_page.addcontent(lpdf_rte)
-
-lpdf_doc.addpage(lpdf_page)
-
-lpdf_doc.security.allowforms = true
-lpdf_doc.security.allowmodify = true
-
-//Guardamos y Visualizamos.
-wf_save_and_display_pdf (lpdf_doc)
-end event
 
 type cb_settings from commandbutton within w_main
 integer x = 101
@@ -1340,4 +1385,59 @@ integer y = 4
 integer width = 4352
 integer height = 260
 end type
+
+type cb_create_fillable_form from commandbutton within w_main
+boolean visible = false
+integer x = 59
+integer y = 1856
+integer width = 635
+integer height = 112
+integer taborder = 40
+integer textsize = -10
+integer weight = 400
+fontcharset fontcharset = ansi!
+fontpitch fontpitch = variable!
+fontfamily fontfamily = swiss!
+string facename = "Tahoma"
+string pointer = "Hyperlink!"
+string text = "Create Fillable Form"
+end type
+
+event clicked;PDFdocument lpdf_doc
+PDFpage lpdf_page
+PDFtext lpdf_sle
+PDFMultilineText lpdf_mle
+//PDFRichText lpdf_rte
+
+lpdf_doc = CREATE PDFdocument
+lpdf_page = CREATE PDFpage
+lpdf_sle = CREATE PDFtext
+lpdf_mle = CREATE PDFMultilineText
+//lpdf_rte = CREATE PDFRichText
+
+lpdf_sle.content = "Nombre"
+lpdf_sle.textcolor.rgb = rgb(255,0,0)
+lpdf_sle.x = 100
+lpdf_sle.y = 100
+lpdf_sle.name = "Nombre"
+
+lpdf_mle.content = "Apellidos"
+lpdf_mle.textcolor.rgb = rgb (0,0,0)
+lpdf_mle.x = 100
+lpdf_mle.y = 200
+lpdf_mle.name = "Apellidos"
+lpdf_mle.setsize(200, 200)
+
+lpdf_page.addcontent(lpdf_sle)
+lpdf_page.addcontent(lpdf_mle)
+//lpdf_page.addcontent(lpdf_rte)
+
+lpdf_doc.addpage(lpdf_page)
+
+lpdf_doc.security.allowforms = true
+lpdf_doc.security.allowmodify = true
+
+//Guardamos y Visualizamos.
+wf_save_and_display_pdf (lpdf_doc)
+end event
 
