@@ -1,0 +1,18 @@
+﻿EXE:pdfbuilder_demo.exe,,0,1,1,0,C:\Program Files (x86)\Appeon\Common\PowerBuilder\Runtime 25.0.0.3683
+CMP:0,0,0,3,0,0,1
+COM:RSRSYSTEM
+DES:Appeon Power Builder 2025 Product File 64Bits
+CPY:Ramón San Félix Ramón
+PRD:PdfBuilder_Demo
+PVS:2025.1.3683.4
+PVN:2025,1,3683,4
+FVS:2025.1.3683.4
+FVN:2025,1,3683,4
+MAN:0,asInvoker,0
+PBD:pdfbuilder_demo.pbl,,1
+OBJ:C:\proyecto pw2025\Blog\PowerBuilder\pdfbuilder_demo\pdfbuilder_demo.pbl,w_datastore,w
+OBJ:C:\proyecto pw2025\Blog\PowerBuilder\pdfbuilder_demo\pdfbuilder_demo.pbl,w_main,w
+OBJ:C:\proyecto pw2025\Blog\PowerBuilder\pdfbuilder_demo\pdfbuilder_demo.pbl,w_settings,w
+OBJ:C:\proyecto pw2025\Blog\PowerBuilder\pdfbuilder_demo\pdfbuilder_demo.pbl,d_grafico_2valores,d
+OBJ:C:\proyecto pw2025\Blog\PowerBuilder\pdfbuilder_demo\pdfbuilder_demo.pbl,w_docs,w
+OBJ:C:\proyecto pw2025\Blog\PowerBuilder\pdfbuilder_demo\pdfbuilder_demo.pbl,pdfbuilder_demo,a
